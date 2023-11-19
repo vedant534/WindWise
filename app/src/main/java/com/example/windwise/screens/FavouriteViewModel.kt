@@ -19,6 +19,7 @@ class FavouriteViewModel @Inject constructor(private val repository: WeatherDbRe
     private val _favList = MutableStateFlow<List<Favorite>>(emptyList())
     val favList = _favList.asStateFlow()
 
+
     init {
          viewModelScope.launch (Dispatchers.IO){
              repository
@@ -26,12 +27,10 @@ class FavouriteViewModel @Inject constructor(private val repository: WeatherDbRe
                  .distinctUntilChanged()
                  .collect{listOfFavs->
                      if(listOfFavs.isNullOrEmpty()){
-                         Log.d("TAGQ",": EMPTY")
+                         _favList.value = emptyList()
                      }
                      else{
                          _favList.value = listOfFavs
-                         Log.d("favs",": ${favList.value}")
-
                      }
 
                  }
